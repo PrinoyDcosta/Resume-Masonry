@@ -1,6 +1,6 @@
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import { Form } from "@/components/ui/form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -22,6 +22,13 @@ const SkillsEditorForm: FC<SkillsEditorFormProps> = ({
     setViewMode
 }) => {
 
+    useEffect(() => {
+        let test
+        data.map(item => {
+            
+        })
+    }, [data])
+
     const formSchema = z.object({
         title: z.string().nonempty({
           message: "Title is required",
@@ -37,7 +44,6 @@ const SkillsEditorForm: FC<SkillsEditorFormProps> = ({
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        debugger
         const {title} = values
         console.log(values)
         updateData([], title)

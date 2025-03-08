@@ -1,0 +1,35 @@
+/* .skill-section{
+    &before {
+        content:'';
+        position: absolute;
+        background-color: pink;
+        width: 30%;
+        height: 3px;
+        top: 0;
+        left:0;
+    }
+    &after {
+        content:'';
+        position: absolute;
+        background-color: pink;
+        width: 30%;
+        height: 3px;
+        top: 0;
+        left:0;
+    }
+} */
+/* .section-underline h1 {
+    position: relative
+} */
+.section-underline {
+    position: relative;
+} 
+
+.section-underline::before{
+    background-color: black;
+    content: '';
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    top: 23px
+}
