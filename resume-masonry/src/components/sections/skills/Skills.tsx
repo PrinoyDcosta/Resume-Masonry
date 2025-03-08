@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react"
 import SkillsViewer from "./SkillsViewer"
 import SkillsEditor from "./SkillsEditor"
-import { ISkills, SectionTypes } from "@/components/common/section-consts"
+import { ISkills, SectionTypes } from "@/components/common/constants/section-consts"
 import { isUndefined, max } from "lodash-es"
 
 interface SkillsProps {

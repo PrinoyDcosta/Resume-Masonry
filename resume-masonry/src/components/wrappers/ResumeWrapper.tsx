@@ -1,6 +1,6 @@
 import { useState } from "react"
 import Skills from "../sections/skills/Skills"
-import { ISection, SectionType, SectionTypes } from "../common/section-consts"
+import { ISection, SectionType, SectionTypes } from "../common/constants/section-consts"
 import { isEmpty, isUndefined } from "lodash-es"
 
 const ResumeWrapper = () => { 

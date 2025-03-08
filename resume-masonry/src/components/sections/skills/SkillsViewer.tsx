@@ -1,4 +1,4 @@
-import { ISkills } from "@/components/common/section-consts"
+import { ISkills } from "@/components/common/constants/section-consts"
 import { Button } from "@/components/ui/button"
 import { isEmpty } from "lodash-es"
 import { FC } from "react"
