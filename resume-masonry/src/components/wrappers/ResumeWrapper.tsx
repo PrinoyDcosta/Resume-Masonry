@@ -1,10 +1,11 @@
 import { useState } from "react"
 import Skills from "../sections/skills/Skills"
-import { IAwards, IEducation, ILanguage, ISection, ISkills, SectionType, SectionTypes } from "../common/constants/section-consts"
+import { IAwards, IEducation, ILanguage, ISection, ISkills, IWorkExperience, SectionType, SectionTypes } from "../common/constants/section-consts"
 import { isUndefined } from "lodash-es"
 import Awards from "../sections/awards/Awards"
 import Education from "../sections/education/Education"
 import Languages from "../sections/languages/Languages"
+import WorkExperience from "../sections/experience/WorkExperience"
 
 const ResumeWrapper = () => { 
     
@@ -50,10 +51,33 @@ const ResumeWrapper = () => {
         "proficiency": "Native proficiency"
     },]
 
+    const experienceData: IWorkExperience[] = [{
+        "jobTitle": "Software Engineer",
+        "companyName": "Persistent Systems",
+        "companyLocation": "Goa",
+        "dateFrom": "Dec 2024",
+        "dateTo": "Dec 2025",
+        "description": [
+            "Developed a dynamic content creation tool for the client’s news portal, enabling seamless generation of news articles, promotions, and announcements, improving content delivery speed and engagement by 40%.",
+            "Developed a dynamic content creation tool for the client’s news portal, enabling seamless generation of news articles, promotions, and announcements, improving content delivery speed and engagement by 40%.",
+            "Developed a dynamic content creation tool for the client’s news portal, enabling seamless generation of news articles, promotions, and announcements, improving content delivery speed and engagement by 40%.",
+            "Developed a dynamic content creation tool for the client’s news portal, enabling seamless generation of news articles, promotions, and announcements, improving content delivery speed and engagement by 40%.",
+            "Developed a dynamic content creation tool for the client’s news portal, enabling seamless generation of news articles, promotions, and announcements, improving content delivery speed and engagement by 40%.",
+            "Developed a dynamic content creation tool for the client’s news portal, enabling seamless generation of news articles, promotions, and announcements, improving content delivery speed and engagement by 40%.",
+            "Developed a dynamic content creation tool for the client’s news portal, enabling seamless generation of news articles, promotions, and announcements, improving content delivery speed and engagement by 40%.",
+            "Developed a dynamic content creation tool for the client’s news portal, enabling seamless generation of news articles, promotions, and announcements, improving content delivery speed and engagement by 40%."
+        ]
+    }]
+
     const mainDummy = [{
         "title": "Skills",
         "type": SectionType.SKILLS,
         "items": skillsData
+    },
+    {
+        "title": "Work Experience",
+        "type": SectionType.EXPERIENCE,
+        "items": experienceData
     },
     {
         "title": "Awards",
@@ -98,6 +122,12 @@ const ResumeWrapper = () => {
             if(item.type === SectionType.SKILLS)
                 return <Skills 
                             data={item.items as ISkills[]} 
+                            title={item.title} 
+                            updateData={(newData?: Array<SectionTypes>, title?: string) => updateData(item.type, newData, title)}
+                        />
+            if(item.type === SectionType.EXPERIENCE)
+                return <WorkExperience 
+                            data={item.items as IWorkExperience[]} 
                             title={item.title} 
                             updateData={(newData?: Array<SectionTypes>, title?: string) => updateData(item.type, newData, title)}
                         />

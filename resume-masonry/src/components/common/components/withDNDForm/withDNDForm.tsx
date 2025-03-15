@@ -56,7 +56,7 @@ export const withDNDForm = <P extends {}, T>(Component : React.ComponentType<P>,
         return (
         <div className="bg-blue-50 p-5 pb-0 rounded-xl ">
                 <Form
-                className="w-full"
+                    className="w-full"
                     form={form}
                     name="skills-form"
                     labelCol={{ span: 8 }}
@@ -108,6 +108,7 @@ export const withDNDForm = <P extends {}, T>(Component : React.ComponentType<P>,
                                                                                             deleteGroup(index)
                                                                                             //remove(field.name)
                                                                                         }}
+                                                                                        type='button'
                                                                                     >
                                                                                         <TrashIcon/>
                                                                                     </ShadcnButton>

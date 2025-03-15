@@ -8,7 +8,7 @@ export enum SectionType {
     PROJECTS
 }
 
-export type SectionTypes = ISkills | IAwards | IEducation | ILanguage
+export type SectionTypes = ISkills | IAwards | IEducation | ILanguage | IWorkExperience
 
 export interface ISection {
     title: string
@@ -39,3 +39,21 @@ export interface ILanguage {
     language: string
     proficiency: string
 }
+
+export interface IWorkExperience {
+    jobTitle: string
+    companyName: string
+    companyLocation: string
+    dateFrom: string
+    dateTo: string
+    description: string[]
+}
+
+// export interface IProject {
+//     projectTitle: string
+//     companyName: string
+//     location: string
+//     dateFrom: string
+//     dateTo: string
+//     description: string[]
+// }
