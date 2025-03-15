@@ -5,7 +5,7 @@ import AwardsViewer from "./AwardsViewer"
 import { withDNDForm } from "@/components/common/components/withDNDForm/withDNDForm"
 import { IAwardFormFieldProps } from "./AwardFormFields"
 import dayjs from "dayjs"
-import AwardFormField from "./AwardFormFields"
+import AwardFormFields from "./AwardFormFields"
 
 
 interface AwardsProps {
@@ -30,7 +30,7 @@ const Awards: FC<AwardsProps> = ({
         updateData(result, title)
     }
     
-    const AwardsDragAndDropForm = withDNDForm<IAwardFormFieldProps, IAwards>(AwardFormField, title, () => setIsEditMode(false), data, updateSkills)
+    const AwardsDragAndDropForm = withDNDForm<IAwardFormFieldProps, IAwards>(AwardFormFields, title, () => setIsEditMode(false), data, updateSkills)
 
     return (<>
         {

@@ -8,7 +8,7 @@ export enum SectionType {
     PROJECTS
 }
 
-export type SectionTypes = ISkills | IAwards
+export type SectionTypes = ISkills | IAwards | IEducation
 
 export interface ISection {
     title: string
@@ -17,14 +17,20 @@ export interface ISection {
 }
 
 export interface ISkills {
-    //id: number
     title: string
     items: Array<string>
 }
 
 export interface IAwards {
-    //id: number
     awardTitle: string
     awardeeTitle: string
     dateStamp: string
+}
+
+export interface IEducation {
+    degree: string
+    field: string
+    dateFrom: string
+    dateTo: string
+    collegeName: string
 }

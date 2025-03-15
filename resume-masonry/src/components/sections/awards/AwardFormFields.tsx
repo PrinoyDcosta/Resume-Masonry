@@ -8,7 +8,7 @@ export interface IAwardFormFieldProps {
     index?: number
 }
 
-const AwardFormField: FC<IAwardFormFieldProps> = ({
+const AwardFormFields: FC<IAwardFormFieldProps> = ({
     field,
     index
 } : any) => {
@@ -50,4 +50,4 @@ const AwardFormField: FC<IAwardFormFieldProps> = ({
     </>
 }
 
-export default AwardFormField
+export default AwardFormFields
