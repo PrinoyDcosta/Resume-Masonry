@@ -17,7 +17,7 @@ export interface ISection {
 }
 
 export interface ISkills {
-    id: number
+    //id: number
     title: string
     items: Array<string>
 }

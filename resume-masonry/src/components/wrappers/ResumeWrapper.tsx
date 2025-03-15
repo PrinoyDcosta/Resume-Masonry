@@ -1,7 +1,7 @@
 import { useState } from "react"
 import Skills from "../sections/skills/Skills"
 import { ISection, SectionType, SectionTypes } from "../common/constants/section-consts"
-import { isEmpty, isUndefined } from "lodash-es"
+import { isUndefined } from "lodash-es"
 
 const ResumeWrapper = () => { 
     
@@ -27,14 +27,18 @@ const ResumeWrapper = () => {
         let sectionToUpdate = data.find(item => item.type === type)
         if(isUndefined(sectionToUpdate))
             return
-            
-        if(!isUndefined(title))
-            sectionToUpdate.title = title
-        if(!isUndefined(newData))
-            sectionToUpdate.items = newData
+          
         setData((oldState) => {
-            let filteredState = oldState.filter(item => item.type !== type)
-            return [ ...filteredState, sectionToUpdate]
+            return oldState.map(item => {
+                if(item.type === type)
+                {  
+                    if(!isUndefined(title))
+                        item.title = title
+                    if(!isUndefined(newData))
+                        item.items = newData
+                }
+                return item
+            })
         })
     }
 

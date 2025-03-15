@@ -1,5 +1,4 @@
 import { ISkills } from "@/components/common/constants/section-consts"
-import { Button } from "@/components/ui/button"
 import { FC } from "react"
 import SkillsEditorForm from "./SkillsEditorForm"
 

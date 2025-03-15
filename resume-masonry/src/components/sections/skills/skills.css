@@ -1,26 +1,3 @@
-/* .skill-section{
-    &before {
-        content:'';
-        position: absolute;
-        background-color: pink;
-        width: 30%;
-        height: 3px;
-        top: 0;
-        left:0;
-    }
-    &after {
-        content:'';
-        position: absolute;
-        background-color: pink;
-        width: 30%;
-        height: 3px;
-        top: 0;
-        left:0;
-    }
-} */
-/* .section-underline h1 {
-    position: relative
-} */
 .section-underline {
     position: relative;
 } 

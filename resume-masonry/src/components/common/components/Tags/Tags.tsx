@@ -4,8 +4,8 @@ import { useEffect, useState } from "react"
 
 interface TagsProps {
     value?: string[]
-    onChange: (id: number, tags: string[]) => void
-    lineId: number
+    onChange?: (tags: string[]) => void
+    lineId?: number
 }
 const Tags = ({
     value = [],
@@ -16,12 +16,12 @@ const Tags = ({
     const [showInput, setShowInput] = useState(false)
     const [input, setInput] = useState<string>("")
 
-    const removeTag = (id: number, tag: string) => {
+    const removeTag = (tag: string) => {
         let newValues = [ ...value]
-        onChange(id, newValues.filter(item => item !== tag))
+        onChange && onChange(newValues.filter(item => item !== tag))
     }
 
-    const onAddTag = (id: number, tag: string) => {
+    const onAddTag = (tag: string) => {
         if(isEmpty(tag) || value.includes(tag))
         {
             setInput("")
@@ -29,7 +29,7 @@ const Tags = ({
             return
         }
         let newValues = [ ...value, tag]
-        onChange(id, newValues)
+        onChange && onChange(newValues)
         setInput("")
         setShowInput(false)
     }
@@ -38,7 +38,7 @@ const Tags = ({
         isArray(value) ? value.map(item => <>
             <Tag closeIcon onClose={(e) => {
                 e.preventDefault()
-                removeTag(lineId, item)}
+                removeTag(item)}
             }>
             {item}
             </Tag>
@@ -48,8 +48,8 @@ const Tags = ({
         showInput ?  
             <Input 
                 placeholder="Add Skill" 
-                onBlur={(e) => onAddTag(lineId, e.target.value)} 
-                onPressEnter={(e) => onAddTag(lineId, (e.target as HTMLInputElement).value)}
+                onBlur={(e) => onAddTag(e.target.value)} 
+                onPressEnter={(e) => onAddTag((e.target as HTMLInputElement).value)}
                 className="w-48!"
                 value={input}
                 onChange={(value) => setInput(value.target.value)}

@@ -1,8 +1,8 @@
-import { FC, useEffect, useState } from "react"
+import { FC, useState } from "react"
 import SkillsViewer from "./SkillsViewer"
 import SkillsEditor from "./SkillsEditor"
 import { ISkills, SectionTypes } from "@/components/common/constants/section-consts"
-import { isUndefined, max } from "lodash-es"
+import { withToolbar } from "@/components/common/components/WithToolbar/withToolbar"
 
 interface SkillsProps {
     title: string
@@ -16,19 +16,10 @@ const Skills: FC<SkillsProps> = ({
     updateData
 }) => {
     const [isEditMode, setIsEditMode] = useState(false)
-
-    const incrementLastId = () => {
-        let maxId = max(data.map(item => item.id))
-        return maxId! + 1
-    }
+    const SkillsWithToolbar = withToolbar(SkillsViewer, title, () => setIsEditMode(true))
 
     const updateSkills = (newData: Array<ISkills>, title?: string) => {
-        // if(isUndefined(newData.id))
-        // {
-        //     let newId = incrementLastId()
-        //     newData.id = newId
-        // }
-        // updateData([...data, newData], title)
+        updateData(newData, title)
     }
 
     return (<>
@@ -36,7 +27,7 @@ const Skills: FC<SkillsProps> = ({
             isEditMode ? 
             <SkillsEditor data={data} setViewMode={() => setIsEditMode(false)} updateData={updateSkills} title={title}/>
             :
-            <SkillsViewer data={data} title={title} setEditMode={() => setIsEditMode(true)}/>
+            <SkillsWithToolbar data={data} />
         }
     </>)
 }

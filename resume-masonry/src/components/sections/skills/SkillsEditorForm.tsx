@@ -1,10 +1,11 @@
 import { FC, useEffect, useState } from "react"
 import { ISkills } from "@/components/common/constants/section-consts"
 import { Button, Form, Input, Tag } from "antd"
-import { isEmpty } from "lodash-es"
+import { pullAt } from "lodash-es"
 import Tags from "@/components/common/components/Tags/Tags"
 import { PlusIcon, TrashIcon } from "@heroicons/react/16/solid"
 import { Button as ShadcnButton } from "@/components/ui/button"
+import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
 
 interface SkillsEditorFormProps {
     setViewMode: () => void
@@ -13,6 +14,10 @@ interface SkillsEditorFormProps {
     title: string
 }
 
+interface FormSubmitValues {
+    groups: ISkills[],
+    title: string
+}
 const SkillsEditorForm: FC<SkillsEditorFormProps> = ({
     updateData,
     data,
@@ -20,132 +25,61 @@ const SkillsEditorForm: FC<SkillsEditorFormProps> = ({
     setViewMode
 }) => {
 
-    // const [formData, setFormData] = useState<ISkills[]>([])
+    const [formData, setFormData] = useState<ISkills[]>([])
     const [form] = Form.useForm();
-    // const formSchema = z.object({
-    //     title: z.string().nonempty({
-    //       message: "Title is required",
-    //     }),
-    // })
-    // const form = useForm<z.infer<typeof formSchema>>({
-    //     resolver: zodResolver(formSchema),
-    //     // defaultValues: {
-    //     //     title: title,
-    //     // },
-    // })
-
-    // function onSubmit(values: z.infer<typeof formSchema>) {
-    //     // Do something with the form values.
-    //     // ✅ This will be type-safe and validated.
-    //     debugger
-    //     const {title} = values
-    //     console.log(values)
-    //     updateData([], title)
-    //     setViewMode()
-    // }
 
     const onCancel = () => {
         setViewMode()
     }
 
     useEffect(() => {
-        form.setFieldValue(`groups`, [...data])
+        setFormData([...data])
     },[data])
 
+    const onSubmit = (values: FormSubmitValues) => {
+        updateData(values.groups, values.title)
+        setViewMode()
+    };
 
-    const onChangeTags = (id: number, tags: string[]) => {
-        form.setFieldValue(['groups', id.toString(), 'items'], tags)
+    const addGroup = () => {
+        setFormData(oldState => {
+            return [ ...oldState, { title: '', items: [] }]
+         })
     }
 
-    const onSubmit = (values: any) => {
-        console.log('Success:', values);
-    };
+    const deleteGroup = (groupIndex: number) => {
+        let currentFields = form.getFieldValue([`groups`])
+        pullAt(currentFields, [groupIndex]);
+        form.setFieldValue('groups', currentFields)
+        setFormData([ ...currentFields])
+    }
+
+    const onDragEnd = (dropContext:  DropResult<string>) => {
+        let currentFields : ISkills[] = form.getFieldValue([`groups`])
+        let itemToMove = currentFields.find((item, index) => index === dropContext.source.index)!
+        let otherItems = currentFields.filter((item, index) => index !== dropContext.source.index)
+        otherItems.splice(dropContext.destination!.index, 0, itemToMove)
+        setFormData([ ...otherItems])
+        form.setFieldValue('groups', otherItems)
+    }
 
     return (
     <div className="bg-blue-50 p-5 pb-0 rounded-xl ">
-          {/* <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <FormItem
-                    formControl={form.control}
-                    name="section-title"
-                    label={"Section Title"}
-                    renderComponent={(field) => <Input defaultValue={title} placeholder="Enter the title" {...field} />}
-                    placeholder="Enter the section title"
-                    className="bg-blue-100"
-                />
-                <div>
-                    <h6 className="font-medium text-sm">Section Content</h6>
-                    <div className="p-2">
-                        {
-                            formData.map(item => {
-                                return(<div key={item.id} className="mt-3 odd:bg-blue-100 even:bg-blue-200">
-                                    <FormItem
-                                        formControl={form.control}
-                                        name={`title-${item.id}`}
-                                        label={"Title"}
-                                        renderComponent={(field) => <Input className="bg-white" defaultValue={item.title} placeholder="Enter the title" {...field} />}
-                                    />
-                                    <FormItem
-                                        formControl={form.control}
-                                        name={`values-${item.id}`}
-                                        label={"Values"}
-                                        renderComponent={(field) => <>
-                                            {item.items.map(item2 =>
-                                                <Tag closeIcon onClose={(e) => {
-                                                    e.preventDefault()
-                                                    removeTag(item.id, item2)}
-                                                }>
-                                                {item2}
-                                                </Tag>)}
-                                            <Input 
-                                                className="mt-2 bg-white" 
-                                                placeholder="Add a value" 
-                                                // {...field}
-                                                onBlur={(e) => {
-                                                    debugger
-                                                    e.preventDefault()
-                                                    onAddTag(item.id, e.target.value)
-                                                }} 
-                                                {...field}
-                                                // onKeyDown={(e) => {
-                                                //     e.preventDefault()
-                                                //     if(e.key === 'Enter')
-                                                //     {
-                                                //         debugger
-                                                //         onAddTag(item.id, e.target.value)
-                                                //     }}} 
-                                                />
-                                        </>}
-                                        className="mt-3"
-                                    />
-                                </div>)
-                            })
-                        }
-
-                    </div>
-                </div>
-                <Button variant="outline" type="submit">Submit</Button>
-                <Button onClick={onCancel} variant="outline" type="submit">Cancel</Button>
-            </form>
-            </Form> */}
             <Form
             className="w-full"
                 form={form}
                 name="skills-form"
-                // labelCol={{ span: 8 }}
-                // wrapperCol={{ span: 16 }}
-                // onFinish={onFinish}
-                // onFinishFailed={onFinishFailed}
+                labelCol={{ span: 8 }}
                 autoComplete="off"
                 onFinish={onSubmit}
                 rootClassName="flex flex-wrap"
             >
-                <div className="w-full justify-center">
+                <div className="w-full">
                         <h2>Skill header</h2>
-                        <div className="px-20">
+                        <div className="pr-38">
                             <Form.Item 
                                 label="Title"
-                                name="section-title"
+                                name="title"
                                 rules={[{ required: true, message: 'Please enter the section title!' }]}
                                 initialValue={title}
                                 className=""
@@ -157,101 +91,96 @@ const SkillsEditorForm: FC<SkillsEditorFormProps> = ({
 
                 <div className="w-full">
                     <h2>Skill Groups</h2>
-                    {/* {
-                        formData.map(item => <div className="bg-blue-100">
-                            <Form.Item 
-                                label="Skill Group Title"
-                                name={`group-title-${item.id}`}
-                                rules={[{ required: true, message: 'Please enter the skill group title!' }]}
-                                initialValue={item.title}
-                            >
-                                <Input key={item.id} placeholder="Enter group title"/>
-                            </Form.Item>
-                            <Form.Item 
-                                label="Skills"
-                                name={`group-values-${item.id}`}
-                                rules={[{ required: true, message: 'Please enter atleast one skill!' }]}
-                                initialValue={item.items}
-                            >
-                                <Tags 
-                                    key={item.id}
-                                    value={item.items}
-                                    onChange={onChangeTags}
-                                    lineId={item.id}
-                                />
-                            </Form.Item>
-                        </div>)
-                    } */}
-                    <div className="w-full flex flex-wrap flex-col px-20">
-                        <Form.List name="groups">
-                        {(fields, { add, remove}) =>
+                    <div className="w-full flex flex-wrap flex-col">
                             <>
-                                <div className="flex flex-wrap">
-                                    {
-                                        fields.map((field) => {
-                                            const data: ISkills[] = form.getFieldValue(['groups']);
-                                            const fieldData = data[field.key]
-                                            return (
-                                                    <>
-                                                        <div className="w-5/6">
-                                                            <Form.Item 
-                                                                label="Skill Group Title"
-                                                                name={[field.name, 'title']}
-                                                                rules={[{ required: true, message: 'Please enter the skill group title!' }]}
-                                                                initialValue={fieldData ? fieldData.title : ''}
-                                                            >
-                                                                <Input placeholder="Enter group title"/>
-                                                            </Form.Item>
-                                                            <Form.Item 
-                                                                label="Skills"
-                                                                name={[field.name, 'items']}
-                                                                rules={[{ required: true, message: 'Please enter atleast one skill!' }]}
-                                                                initialValue={fieldData ? fieldData.items : []}
-                                                                valuePropName="value"
-                                                            >
-                                                                <Tags 
-                                                                    onChange={onChangeTags}
-                                                                    lineId={field.key}
-                                                                />
-                                                            </Form.Item>
-                                                        </div>
-                                                        <div className="w-1/6 px-3">
-                                                            <ShadcnButton 
-                                                                className="text-red-600 hover:text-red-600" 
-                                                                variant="outline" 
-                                                                size="icon" 
-                                                                onClick={() => remove(field.name)}
-                                                            >
-                                                                <TrashIcon/>
-                                                            </ShadcnButton>
-                                                        </div>
-                                                    </>
-                                                )
-                                        })
-                                    }
-                                </div>
+                                <DragDropContext onDragEnd={onDragEnd} >
+                                    {/* onDragEnd(params, move)} > */}
+                                    <Droppable droppableId="droppable-1" type="PERSON">
+                                        {(dropppableProvided, dropppableSnapshot) => (
+                                            
+                                            <div ref={dropppableProvided.innerRef} className="flex flex-wrap" {...dropppableProvided.droppableProps}>
+                                                {
+                                                    formData.map((field, index) => {
+                                                        return (
+                                                            <>
+                                                                <Draggable draggableId={`draggable-${index}`} index={index}>
+                                                                    {(provided, snapshot) => (
+                                                                        <div key={index} className='flex w-full border-2 p-5 m-2' ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                                                            <div className="w-5/6">
+                                                                                <Form.Item 
+                                                                                    label="Skill Group Title"
+                                                                                    // name={[field.name, 'title']}
+                                                                                    name={['groups', index, 'title']}
+                                                                                    //name={`${}`}
+                                                                                    rules={[{ required: true, message: 'Please enter the skill group title!' }]}
+                                                                                    //initialValue={fieldData ? fieldData.title : ''}
+                                                                                    initialValue={field.title}
+                                                                                >
+                                                                                    <Input placeholder="Enter group title"/>
+                                                                                </Form.Item>
+                                                                                <Form.Item 
+                                                                                    label="Skills"
+                                                                                    name={['groups', index, 'items']}
+                                                                                    rules={[{ required: true, message: 'Please enter atleast one skill!' }]}
+                                                                                    // initialValue={fieldData ? fieldData.items : []}
+                                                                                    initialValue={field.items}
+                                                                                >
+                                                                                    <Tags />
+                                                                                </Form.Item>
+                                                                            </div>
+                                                                            <div className="w-1/6 px-3">
+                                                                                <ShadcnButton 
+                                                                                    className="text-red-600 hover:text-red-600" 
+                                                                                    variant="outline" 
+                                                                                    size="icon" 
+                                                                                    onClick={() => {
+                                                                                        deleteGroup(index)
+                                                                                        //remove(field.name)
+                                                                                    }}
+                                                                                >
+                                                                                    <TrashIcon/>
+                                                                                </ShadcnButton>
+                                                                            </div>
+                                                                        </div>
+                                                                    )}
+                                                                </Draggable>
+                                                            </>
+                                                            )
+                                                    })
+                                                }
+                                                {dropppableProvided.placeholder}
+                                            </div>
+                                        )}
+                                    </Droppable>
+                                </DragDropContext>
                                 <div className="px-100">
                                     <Form.Item>
-                                        <Button type="dashed" onClick={() => add()} block icon={<PlusIcon />}>
+                                        <Button type="dashed" onClick={() => {
+                                             //add()
+                                             addGroup()
+                                            }} block icon={<PlusIcon />}>
                                             Add group
                                         </Button>
                                     </Form.Item>
                                 </div>
                             </>
                         
-                        }
-                        </Form.List>
+                        {/* }
+                        </Form.List> */}
                     </div>
                 </div>
-
-                <Form.Item label={null}>
-                    <Button type="primary" htmlType="submit">
-                        Submit
-                    </Button>
-                    <Button type="default" onClick={onCancel}>
-                        Cancel
-                    </Button>
-                </Form.Item>
+                <div className="w-full mb-5">
+                    {/* <Form.Item className="flex flex-wrap flex-row w-full" label={null}> */}
+                        <div className="flex flex-wrap justify-end gap-2">
+                            <Button type="primary" htmlType="submit">
+                                Submit
+                            </Button>
+                            <Button type="default" onClick={onCancel}>
+                                Cancel
+                            </Button>
+                        </div>
+                    {/* </Form.Item> */}
+                </div>
             </Form>
     </div>
   )
