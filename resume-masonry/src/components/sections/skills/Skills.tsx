@@ -1,8 +1,9 @@
 import { FC, useState } from "react"
 import SkillsViewer from "./SkillsViewer"
-import SkillsEditor from "./SkillsEditor"
 import { ISkills } from "@/components/common/constants/section-consts"
 import { withToolbar } from "@/components/common/components/WithToolbar/withToolbar"
+import { withDNDForm } from "@/components/common/components/withDNDForm/withDNDForm"
+import SkilsFormFields, { ISkilsFormFieldProps } from "./SkillsFormFields"
 
 interface SkillsProps {
     title: string
@@ -21,11 +22,12 @@ const Skills: FC<SkillsProps> = ({
     const updateSkills = (newData: Array<ISkills>, title?: string) => {
         updateData(newData, title)
     }
+    const SkillsDragAndDropForm = withDNDForm<ISkilsFormFieldProps, ISkills>(SkilsFormFields, title, () => setIsEditMode(false), data, updateSkills)
 
     return (<>
         {
             isEditMode ? 
-            <SkillsEditor data={data} setViewMode={() => setIsEditMode(false)} updateData={updateSkills} title={title}/>
+            <SkillsDragAndDropForm />
             :
             <SkillsWithToolbar data={data} />
         }
