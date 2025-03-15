@@ -1,9 +1,10 @@
 import { useState } from "react"
 import Skills from "../sections/skills/Skills"
-import { IAwards, IEducation, ISection, ISkills, SectionType, SectionTypes } from "../common/constants/section-consts"
+import { IAwards, IEducation, ILanguage, ISection, ISkills, SectionType, SectionTypes } from "../common/constants/section-consts"
 import { isUndefined } from "lodash-es"
 import Awards from "../sections/awards/Awards"
 import Education from "../sections/education/Education"
+import Languages from "../sections/languages/Languages"
 
 const ResumeWrapper = () => { 
     
@@ -40,6 +41,15 @@ const ResumeWrapper = () => {
         "collegeName": "Padre Conces"
     }]
 
+    const languageData: ILanguage[] = [{
+        "language": "English",
+        "proficiency": "Native proficiency"
+    },
+    {
+        "language": "Hindi",
+        "proficiency": "Native proficiency"
+    },]
+
     const mainDummy = [{
         "title": "Skills",
         "type": SectionType.SKILLS,
@@ -54,6 +64,11 @@ const ResumeWrapper = () => {
         "title": "Education",
         "type": SectionType.EDUCATION,
         "items": educationData
+    },
+    {
+        "title": "Languages",
+        "type": SectionType.LANGUAGES,
+        "items": languageData
     }]
 
     const [data, setData] = useState<Array<ISection>>(mainDummy)
@@ -95,6 +110,12 @@ const ResumeWrapper = () => {
             if(item.type === SectionType.EDUCATION)
                 return <Education 
                             data={item.items as IEducation[]} 
+                            title={item.title} 
+                            updateData={(newData?: Array<SectionTypes>, title?: string) => updateData(item.type, newData, title)}
+                        />
+            if(item.type === SectionType.LANGUAGES)
+                return <Languages 
+                            data={item.items as ILanguage[]} 
                             title={item.title} 
                             updateData={(newData?: Array<SectionTypes>, title?: string) => updateData(item.type, newData, title)}
                         />
