@@ -1,13 +1,13 @@
 import { FC, useState } from "react"
 import SkillsViewer from "./SkillsViewer"
 import SkillsEditor from "./SkillsEditor"
-import { ISkills, SectionTypes } from "@/components/common/constants/section-consts"
+import { ISkills } from "@/components/common/constants/section-consts"
 import { withToolbar } from "@/components/common/components/WithToolbar/withToolbar"
 
 interface SkillsProps {
     title: string
     data: Array<ISkills>
-    updateData: (newData?: Array<SectionTypes>, title?: string) => void
+    updateData: (newData?: Array<ISkills>, title?: string) => void
 }
 
 const Skills: FC<SkillsProps> = ({
