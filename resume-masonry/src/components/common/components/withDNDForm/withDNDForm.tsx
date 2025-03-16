@@ -54,7 +54,7 @@ export const withDNDForm = <P extends {}, T>(Component : React.ComponentType<P>,
         }
     
         return (
-        <div className="bg-blue-50 p-5 pb-0 rounded-xl border-4 my-2">
+        <div className="bg-blue-50 p-5 pb-0 rounded-xl my-2 shadow-lg">
                 <Form
                     className="w-full"
                     form={form}

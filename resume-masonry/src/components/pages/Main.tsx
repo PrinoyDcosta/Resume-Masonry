@@ -7,7 +7,7 @@ const Main = () => {
             <h1>
                 Resume Editor/Viewer
             </h1>
-            <div className="p-40 pt-10">
+            <div className="p-40 pt-10 ">
                 <ResumeWrapper />
             </div>
         </div>

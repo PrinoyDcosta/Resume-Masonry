@@ -147,7 +147,7 @@ const ResumeWrapper = () => {
         })
     }
 
-    return <>
+    return <div className="shadow-xl">
     {
         data.map(item => {
             if(item.type === SectionType.SKILLS)
@@ -196,7 +196,7 @@ const ResumeWrapper = () => {
             return <></>
         })
     }
-    </>
+    </div>
 }
 
 export default ResumeWrapper
