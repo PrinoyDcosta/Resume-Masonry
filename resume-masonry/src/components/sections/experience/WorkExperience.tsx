@@ -5,6 +5,7 @@ import { withDNDForm } from "@/components/common/components/withDNDForm/withDNDF
 import dayjs from "dayjs"
 import WorkExperienceViewer from "./WorkExperienceViewer"
 import WorkExperienceFormFields, { IWorkExperienceFormFieldProps } from "./WorkExperienceFormFields"
+import RichTextEditor from "@/components/common/components/RichTextEditor/RichTextEditor"
 
 
 interface WorkExperienceProps {

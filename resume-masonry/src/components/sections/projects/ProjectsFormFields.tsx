@@ -1,52 +1,47 @@
-import InputList, { InputListProps } from "@/components/common/components/InputList/InputList"
-import { IWorkExperience } from "@/components/common/constants/section-consts"
+import InputList from "@/components/common/components/InputList/InputList"
+import { IProject } from "@/components/common/constants/section-consts"
 import { DatePicker, Form, Input } from "antd"
 import dayjs from "dayjs"
 import { FC } from "react"
 
-export interface IWorkExperienceFormFieldProps {
-    field?: IWorkExperience,
+export interface IProjectFormFieldProps {
+    field?: IProject,
     index?: number
 }
 
-const WorkExperienceFormFields: FC<IWorkExperienceFormFieldProps> = ({
+const ProjectFormFields: FC<IProjectFormFieldProps> = ({
     field,
     index
 } : any) => {
     return <>
                 <Form.Item 
-                    label="Job title"
+                    label="Project title"
                     // name={[field.name, 'title']}
-                    name={['groups', index, 'jobTitle']}
+                    name={['groups', index, 'projectTitle']}
                     //name={`${}`}
-                    rules={[{ required: true, message: 'Please enter the job title!' }]}
+                    rules={[{ required: true, message: 'Please enter the project title!' }]}
                     //initialValue={fieldData ? fieldData.title : ''}
-                    initialValue={field.jobTitle}
+                    initialValue={field.projectTitle}
                 >
-                    <Input placeholder="Enter job title"/>
+                    <Input placeholder="Enter project title"/>
                 </Form.Item>
                 <Form.Item 
-                    label="Company Name"
+                    label="Project Url"
                     // name={[field.name, 'title']}
-                    name={['groups', index, 'companyName']}
+                    name={['groups', index, 'projectUrl']}
                     //name={`${}`}
-                    rules={[{ required: true, message: 'Please enter the company name!' }]}
+                    rules={[{ required: true, message: 'Please enter the project url!' },
+                        // { 
+                        //     pattern: new RegExp('https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)'), 
+                        //     message: 'Please enter a valid URL'
+                        // }
+                    ]}
                     //initialValue={fieldData ? fieldData.title : ''}
-                    initialValue={field.companyName}
+                    initialValue={field.projectUrl}
                 >
-                    <Input placeholder="Enter company name"/>
+                    <Input placeholder="Enter project url"/>
                 </Form.Item>
-                <Form.Item 
-                    label="Company Location"
-                    // name={[field.name, 'title']}
-                    name={['groups', index, 'companyLocation']}
-                    //name={`${}`}
-                    rules={[{ required: true, message: 'Please enter the company location!' }]}
-                    //initialValue={fieldData ? fieldData.title : ''}
-                    initialValue={field.companyLocation}
-                >
-                    <Input placeholder="Enter company location"/>
-                </Form.Item>
+
                 
                 <Form.Item 
                     label="Start Date"
@@ -77,9 +72,9 @@ const WorkExperienceFormFields: FC<IWorkExperienceFormFieldProps> = ({
                     rules={[{ required: true, message: 'Please enter the description!' }]}
                     initialValue={field.description}
                 >
-                    <InputList />
+                    <Input placeholder="Enter project description"/>
                 </Form.Item>
     </>
 }
 
-export default WorkExperienceFormFields
+export default ProjectFormFields

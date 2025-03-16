@@ -8,7 +8,7 @@ export enum SectionType {
     PROJECTS
 }
 
-export type SectionTypes = ISkills | IAwards | IEducation | ILanguage | IWorkExperience
+export type SectionTypes = ISkills | IAwards | IEducation | ILanguage | IWorkExperience | IProject
 
 export interface ISection {
     title: string
@@ -46,14 +46,13 @@ export interface IWorkExperience {
     companyLocation: string
     dateFrom: string
     dateTo: string
-    description: string[]
+    description: string[] // need to use tailwind richtexteditor
 }
 
-// export interface IProject {
-//     projectTitle: string
-//     companyName: string
-//     location: string
-//     dateFrom: string
-//     dateTo: string
-//     description: string[]
-// }
+export interface IProject {
+    projectTitle: string
+    projectUrl: string
+    dateFrom: string
+    dateTo: string
+    description: string // need to use tailwind richtexteditor
+}

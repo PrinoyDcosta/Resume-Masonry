@@ -99,7 +99,7 @@ export const withDNDForm = <P extends {}, T>(Component : React.ComponentType<P>,
                                                                                 <div className="w-5/6">
                                                                                    <Component { ...props} field={field} index={index}/>
                                                                                 </div>
-                                                                                <div className="w-1/6 px-3">
+                                                                                <div className="w-1/6 px-3 flex justify-end">
                                                                                     <ShadcnButton 
                                                                                         className="text-red-600 hover:text-red-600" 
                                                                                         variant="outline" 
