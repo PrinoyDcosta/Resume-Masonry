@@ -1,12 +1,13 @@
 import { useState } from "react"
 import Skills from "../sections/skills/Skills"
-import { IAwards, IEducation, ILanguage, IProject, ISection, ISkills, IWorkExperience, SectionType, SectionTypes } from "../common/constants/section-consts"
+import { IAwards, IEducation, IHeader, ILanguage, IProject, ISection, ISkills, IWorkExperience, SectionType, SectionTypes } from "../common/constants/section-consts"
 import { isUndefined } from "lodash-es"
 import Awards from "../sections/awards/Awards"
 import Education from "../sections/education/Education"
 import Languages from "../sections/languages/Languages"
 import WorkExperience from "../sections/experience/WorkExperience"
 import Project from "../sections/projects/Projects"
+import Header from "../sections/header/Header"
 
 const ResumeWrapper = () => { 
     
@@ -79,7 +80,22 @@ const ResumeWrapper = () => {
 
     }]
 
-    const mainDummy = [{
+    const headerData: IHeader[] = [{
+        fullName: `Prinoy D'Costa`,
+        githubUrl: '',
+        linkedinUrl: '',
+        location: 'Goa',
+        email: 'prinoy@gmail.com', 
+        phoneNumber: '+919822222222' 
+    }]
+
+    const mainDummy = [    
+    {
+        "title": "Header",
+        "type": SectionType.HEADER,
+        "items": headerData
+    },
+    {
         "title": "Skills",
         "type": SectionType.SKILLS,
         "items": skillsData
@@ -108,7 +124,7 @@ const ResumeWrapper = () => {
         "title": "Projects",
         "type": SectionType.PROJECTS,
         "items": projectData
-    }]
+    },]
 
     const [data, setData] = useState<Array<ISection>>(mainDummy)
 
@@ -170,6 +186,13 @@ const ResumeWrapper = () => {
                             title={item.title} 
                             updateData={(newData?: Array<SectionTypes>, title?: string) => updateData(item.type, newData, title)}
                         />
+            if(item.type === SectionType.HEADER)
+                return <Header 
+                            data={item.items as IHeader[]} 
+                            title={item.title} 
+                            updateData={(newData?: SectionTypes[], title?: string) => updateData(item.type, newData, title)}
+                        />
+            return <></>
             return <></>
         })
     }
