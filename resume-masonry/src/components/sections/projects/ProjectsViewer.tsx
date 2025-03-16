@@ -1,9 +1,8 @@
-import { IProject, IWorkExperience } from "@/components/common/constants/section-consts"
+import { IProject } from "@/components/common/constants/section-consts"
 import { Button } from "@/components/ui/button"
 import { LinkIcon } from "@heroicons/react/16/solid"
 import { isEmpty } from "lodash-es"
 import { FC } from "react"
-import { useNavigate } from "react-router"
 
 interface ProjectsViewerProps {
     data: Array<IProject>
@@ -12,8 +11,6 @@ interface ProjectsViewerProps {
 const ProjectsViewer: FC<ProjectsViewerProps> = ({
     data,
 }) => {
-
-    const navigate = useNavigate()
 
     return(
         <>

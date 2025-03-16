@@ -1,5 +1,5 @@
-import { IHeader, IWorkExperience } from "@/components/common/constants/section-consts"
-import { first, isEmpty, isUndefined } from "lodash-es"
+import { IHeader } from "@/components/common/constants/section-consts"
+import { first, isEmpty } from "lodash-es"
 import { FC } from "react"
 interface HeaderViewerProps {
     data: IHeader[]

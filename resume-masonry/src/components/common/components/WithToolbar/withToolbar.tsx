@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button"
 import { ArrowDownIcon, ArrowUpIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/16/solid"
-import { SectionType } from "../../constants/section-consts"
 
 
 export const withToolbar = <P extends {},>(Component : React.ComponentType<P>, title: string, setEditMode: () => void, isHeader?: boolean) => {
