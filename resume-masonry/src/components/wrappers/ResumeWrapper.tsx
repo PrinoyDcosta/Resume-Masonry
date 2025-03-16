@@ -147,7 +147,7 @@ const ResumeWrapper = () => {
         })
     }
 
-    return <div className="shadow-xl">
+    return <div className="shadow-xl pb-15 bg-white">
     {
         data.map(item => {
             if(item.type === SectionType.SKILLS)
