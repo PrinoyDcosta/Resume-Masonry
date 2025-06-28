@@ -1,132 +1,24 @@
 import { useState } from "react"
-import Skills from "../sections/skills/Skills"
+import Skills from "../resume-sections/sections/skills/Skills"
 import { IAwards, IEducation, IHeader, ILanguage, IProject, ISection, ISkills, IWorkExperience, SectionType, SectionTypes } from "../common/constants/section-consts"
 import { isUndefined } from "lodash-es"
-import Awards from "../sections/awards/Awards"
-import Education from "../sections/education/Education"
-import Languages from "../sections/languages/Languages"
-import WorkExperience from "../sections/experience/WorkExperience"
-import Project from "../sections/projects/Projects"
-import Header from "../sections/header/Header"
+import Awards from "../resume-sections/sections/awards/Awards"
+import Education from "../resume-sections/sections/education/Education"
+import Languages from "../resume-sections/sections/languages/Languages"
+import WorkExperience from "../resume-sections/sections/experience/WorkExperience"
+import Project from "../resume-sections/sections/projects/Projects"
+import Header from "../resume-sections/sections/header/Header"
+import { DragDropContext, Draggable, Droppable, DropResult } from "@hello-pangea/dnd"
+import { dataSource } from "@/lib/data"
 
-const ResumeWrapper = () => { 
+interface ResumeWrapperProps {
+    printableContentRef: React.RefObject<HTMLDivElement | null>
+}
+
+const ResumeWrapper = ({ printableContentRef } : ResumeWrapperProps) => { 
     
-    const skillsData: ISkills[] = [{
-        "title": "Frontend",
-        "items": ["Javascript", "Typescript"]
-    },{
-        "title": "Backend",
-        "items": [".NET Core", "Postgres"]
-    }]
 
-    const awardsData: IAwards[] = [{
-        "awardTitle": "Winner of the year",
-        "awardeeTitle": "Persistent Systems",
-        "dateStamp": "Dec 2024"
-    },{
-        "awardTitle": "Winner of the year",
-        "awardeeTitle": "Persistent Systems",
-        "dateStamp": "Dec 2024"
-    }]
-
-    const educationData: IEducation[] = [{
-        "degree": "Masters of Engineering",
-        "field": "Rock Technology",
-        "dateFrom": "Dec 2024",
-        "dateTo": "Jan 2025",
-        "collegeName": "Goa College of Engineering"
-    },
-    {
-        "degree": "Bachelors of Engineering",
-        "field": "Information Technology",
-        "dateFrom": "May 2009",
-        "dateTo": "Dec 2024",
-        "collegeName": "Padre Conces"
-    }]
-
-    const languageData: ILanguage[] = [{
-        "language": "English",
-        "proficiency": "Native proficiency"
-    },
-    {
-        "language": "Hindi",
-        "proficiency": "Native proficiency"
-    },]
-
-    const experienceData: IWorkExperience[] = [{
-        "jobTitle": "Software Engineer",
-        "companyName": "Persistent Systems",
-        "companyLocation": "Goa",
-        "dateFrom": "Dec 2024",
-        "dateTo": "Dec 2025",
-        "description": [
-            "Developed a dynamic content creation tool for the client’s news portal, enabling seamless generation of news articles, promotions, and announcements, improving content delivery speed and engagement by 40%.",
-            "Developed a dynamic content creation tool for the client’s news portal, enabling seamless generation of news articles, promotions, and announcements, improving content delivery speed and engagement by 40%.",
-            "Developed a dynamic content creation tool for the client’s news portal, enabling seamless generation of news articles, promotions, and announcements, improving content delivery speed and engagement by 40%.",
-            "Developed a dynamic content creation tool for the client’s news portal, enabling seamless generation of news articles, promotions, and announcements, improving content delivery speed and engagement by 40%.",
-            "Developed a dynamic content creation tool for the client’s news portal, enabling seamless generation of news articles, promotions, and announcements, improving content delivery speed and engagement by 40%.",
-            "Developed a dynamic content creation tool for the client’s news portal, enabling seamless generation of news articles, promotions, and announcements, improving content delivery speed and engagement by 40%.",
-            "Developed a dynamic content creation tool for the client’s news portal, enabling seamless generation of news articles, promotions, and announcements, improving content delivery speed and engagement by 40%.",
-            "Developed a dynamic content creation tool for the client’s news portal, enabling seamless generation of news articles, promotions, and announcements, improving content delivery speed and engagement by 40%."
-        ]
-    }]
-
-    const projectData: IProject[] = [{
-        "projectTitle": "Developed Google nest",
-        "projectUrl": "https://support.google.com/product-documentation/answer/10231940?hl=en",
-        "dateFrom": "Dec 2024",
-        "dateTo": "Dec 2025",
-        "description": "Developed a dynamic content creation tool for the client’s news portal, enabling seamless generation of news articles, promotions, and announcements, improving content delivery speed and engagement by 40%.",
-
-    }]
-
-    const headerData: IHeader[] = [{
-        fullName: `Prinoy D'Costa`,
-        githubUrl: '',
-        linkedinUrl: '',
-        location: 'Goa',
-        email: 'prinoy@gmail.com', 
-        phoneNumber: '+919822222222' 
-    }]
-
-    const mainDummy = [    
-    {
-        "title": "Header",
-        "type": SectionType.HEADER,
-        "items": headerData
-    },
-    {
-        "title": "Skills",
-        "type": SectionType.SKILLS,
-        "items": skillsData
-    },
-    {
-        "title": "Work Experience",
-        "type": SectionType.EXPERIENCE,
-        "items": experienceData
-    },
-    {
-        "title": "Awards",
-        "type": SectionType.AWARDS,
-        "items": awardsData
-    },
-    {
-        "title": "Education",
-        "type": SectionType.EDUCATION,
-        "items": educationData
-    },
-    {
-        "title": "Languages",
-        "type": SectionType.LANGUAGES,
-        "items": languageData
-    },
-    {
-        "title": "Projects",
-        "type": SectionType.PROJECTS,
-        "items": projectData
-    },]
-
-    const [data, setData] = useState<Array<ISection>>(mainDummy)
+    const [data, setData] = useState<Array<ISection>>(dataSource)
 
     const updateData = (type: SectionType, newData?: Array<SectionTypes>, title?: string) => {
         let sectionToUpdate = data.find(item => item.type === type)
@@ -147,9 +39,7 @@ const ResumeWrapper = () => {
         })
     }
 
-    return <div className="shadow-xl pb-15 bg-white">
-    {
-        data.map(item => {
+    const getSection = (item: ISection) => {
             if(item.type === SectionType.SKILLS)
                 return <Skills 
                             data={item.items as ISkills[]} 
@@ -193,10 +83,49 @@ const ResumeWrapper = () => {
                             updateData={(newData?: SectionTypes[], title?: string) => updateData(item.type, newData, title)}
                         />
             return <></>
-            return <></>
-        })
     }
+    
+    const onDragEnd = (dropContext:  DropResult<string>) => {
+        if(dropContext.destination?.index! !== 0)
+        {
+            let itemToMove = data.find((item, index) => index === dropContext.source.index)!
+            let otherItems = data.filter((item, index) => index !== dropContext.source.index)
+            otherItems.splice(dropContext.destination!.index, 0, itemToMove)
+            setData([ ...otherItems])
+        }
+    }
+
+    return <div className="shadow-xl pb-15 bg-white">
+        <div ref={printableContentRef}>
+            <DragDropContext onDragEnd={onDragEnd} >
+                <Droppable droppableId="droppable-main-1" type="main">
+                    {(dropppableProvided, dropppableSnapshot) => (
+                        
+                        <div ref={dropppableProvided.innerRef} {...dropppableProvided.droppableProps}>
+                            <>
+                                {
+                                    data.map((item,index) => {
+                                         return  <Draggable draggableId={`draggable-main-${index}`} index={index}>
+                                            {(provided, snapshot) => (
+                                                <div key={index}  ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                                    {getSection(item)}
+                                                </div>
+                                            )}
+                                        </Draggable>
+                                    })
+                                }
+                            </>
+                
+                            {dropppableProvided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
+            </DragDropContext>
+
+        </div>
     </div>
 }
 
 export default ResumeWrapper
+
+ 
