@@ -11,15 +11,17 @@ interface ProjectProps {
     title: string
     data: Array<IProject>
     updateData: (newData?: Array<IProject>, title?: string) => void
+    readonly?: boolean
 }
 
 const Project: FC<ProjectProps> = ({
     data,
     title,
-    updateData
+    updateData,
+    readonly
 }) => {
     const [isEditMode, setIsEditMode] = useState(false)
-    const ProjectWithToolbar = withToolbar(ProjectsViewer, title, () => setIsEditMode(true))
+    const ProjectWithToolbar = withToolbar(ProjectsViewer, title, () => setIsEditMode(true), readonly)
 
     const updateSkills = (newData: Array<IProject>, title?: string) => {
         let result = newData.map(item => {

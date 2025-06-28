@@ -9,15 +9,17 @@ interface SkillsProps {
     title: string
     data: Array<ISkills>
     updateData: (newData?: Array<ISkills>, title?: string) => void
+    readonly?: boolean
 }
 
 const Skills: FC<SkillsProps> = ({
     data,
     title,
-    updateData
+    updateData,
+    readonly
 }) => {
     const [isEditMode, setIsEditMode] = useState(false)
-    const SkillsWithToolbar = withToolbar(SkillsViewer, title, () => setIsEditMode(true))
+    const SkillsWithToolbar = withToolbar(SkillsViewer, title, () => setIsEditMode(true), readonly)
 
     const updateSkills = (newData: Array<ISkills>, title?: string) => {
         updateData(newData, title)

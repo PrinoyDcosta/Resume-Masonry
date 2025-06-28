@@ -12,15 +12,17 @@ interface AwardsProps {
     title: string
     data: Array<IAwards>
     updateData: (newData?: Array<IAwards>, title?: string) => void
+    readonly?: boolean
 }
 
 const Awards: FC<AwardsProps> = ({
     data,
     title,
-    updateData
+    updateData,
+    readonly
 }) => {
     const [isEditMode, setIsEditMode] = useState(false)
-    const AwardsWithToolbar = withToolbar(AwardsViewer, title, () => setIsEditMode(true))
+    const ComponentToRender = withToolbar(AwardsViewer, title, () => setIsEditMode(true), readonly)
 
     const updateSkills = (newData: Array<IAwards>, title?: string) => {
         let result = newData.map(item => {
@@ -37,7 +39,7 @@ const Awards: FC<AwardsProps> = ({
             isEditMode ? 
                 <AwardsDragAndDropForm />
             :
-                <AwardsWithToolbar data={data} />
+                <ComponentToRender data={data} />
         }
     </>)
 }

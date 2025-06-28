@@ -12,10 +12,11 @@ import { DragDropContext, Draggable, Droppable, DropResult } from "@hello-pangea
 import { dataSource } from "@/lib/data"
 
 interface ResumeWrapperProps {
-    printableContentRef: React.RefObject<HTMLDivElement | null>
+    printableContentRef: React.RefObject<HTMLDivElement | null>,
+    readonly?: boolean
 }
 
-const ResumeWrapper = ({ printableContentRef } : ResumeWrapperProps) => { 
+const ResumeWrapper = ({ printableContentRef, readonly = false } : ResumeWrapperProps) => { 
     
 
     const [data, setData] = useState<Array<ISection>>(dataSource)
@@ -45,42 +46,49 @@ const ResumeWrapper = ({ printableContentRef } : ResumeWrapperProps) => {
                             data={item.items as ISkills[]} 
                             title={item.title} 
                             updateData={(newData?: Array<SectionTypes>, title?: string) => updateData(item.type, newData, title)}
+                            readonly={readonly}
                         />
             if(item.type === SectionType.EXPERIENCE)
                 return <WorkExperience 
                             data={item.items as IWorkExperience[]} 
                             title={item.title} 
                             updateData={(newData?: Array<SectionTypes>, title?: string) => updateData(item.type, newData, title)}
+                            readonly={readonly}
                         />
             if(item.type === SectionType.AWARDS)
                 return <Awards 
                             data={item.items as IAwards[]} 
                             title={item.title} 
                             updateData={(newData?: Array<SectionTypes>, title?: string) => updateData(item.type, newData, title)}
+                            readonly={readonly}
                         />
             if(item.type === SectionType.EDUCATION)
                 return <Education 
                             data={item.items as IEducation[]} 
                             title={item.title} 
                             updateData={(newData?: Array<SectionTypes>, title?: string) => updateData(item.type, newData, title)}
+                            readonly={readonly}
                         />
             if(item.type === SectionType.LANGUAGES)
                 return <Languages 
                             data={item.items as ILanguage[]} 
                             title={item.title} 
                             updateData={(newData?: Array<SectionTypes>, title?: string) => updateData(item.type, newData, title)}
+                            readonly={readonly}
                         />
             if(item.type === SectionType.PROJECTS)
                 return <Project 
                             data={item.items as IProject[]} 
                             title={item.title} 
                             updateData={(newData?: Array<SectionTypes>, title?: string) => updateData(item.type, newData, title)}
+                            readonly={readonly}
                         />
             if(item.type === SectionType.HEADER)
                 return <Header 
                             data={item.items as IHeader[]} 
                             title={item.title} 
                             updateData={(newData?: SectionTypes[], title?: string) => updateData(item.type, newData, title)}
+                            readonly={readonly}
                         />
             return <></>
     }
@@ -97,30 +105,37 @@ const ResumeWrapper = ({ printableContentRef } : ResumeWrapperProps) => {
 
     return <div className="shadow-xl pb-15 bg-white">
         <div ref={printableContentRef}>
-            <DragDropContext onDragEnd={onDragEnd} >
-                <Droppable droppableId="droppable-main-1" type="main">
-                    {(dropppableProvided, dropppableSnapshot) => (
+            {
+                readonly ?
+                    data.map((item) => {
+                            return getSection(item)
+                    })
+                :
+                    <DragDropContext onDragEnd={onDragEnd} >
+                        <Droppable droppableId="droppable-main-1" type="main">
+                            {(dropppableProvided, dropppableSnapshot) => (
+                                
+                                <div ref={dropppableProvided.innerRef} {...dropppableProvided.droppableProps}>
+                                    <>
+                                        {
+                                            data.map((item,index) => {
+                                                return  <Draggable draggableId={`draggable-main-${index}`} index={index}>
+                                                    {(provided, snapshot) => (
+                                                        <div key={index}  ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                                            {getSection(item)}
+                                                        </div>
+                                                    )}
+                                                </Draggable>
+                                            })
+                                        }
+                                    </>
                         
-                        <div ref={dropppableProvided.innerRef} {...dropppableProvided.droppableProps}>
-                            <>
-                                {
-                                    data.map((item,index) => {
-                                         return  <Draggable draggableId={`draggable-main-${index}`} index={index}>
-                                            {(provided, snapshot) => (
-                                                <div key={index}  ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                                    {getSection(item)}
-                                                </div>
-                                            )}
-                                        </Draggable>
-                                    })
-                                }
-                            </>
-                
-                            {dropppableProvided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-            </DragDropContext>
+                                    {dropppableProvided.placeholder}
+                                </div>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
+            }
 
         </div>
     </div>

@@ -10,15 +10,17 @@ interface HeaderProps {
     title: string
     data: IHeader[]
     updateData: (newData?: IHeader[], title?: string) => void
+    readonly?: boolean
 }
 
 const Header: FC<HeaderProps> = ({
     data,
     title,
-    updateData
+    updateData,
+    readonly
 }) => {
     const [isEditMode, setIsEditMode] = useState(false)
-    const HeaderWithToolbar = withToolbar(HeaderViewer, title, () => setIsEditMode(true), true)
+    const HeaderWithToolbar = withToolbar(HeaderViewer, title, () => setIsEditMode(true), readonly, true)
 
     const updateSkills = (newData: IHeader[], title?: string) => {
         updateData(newData, title)

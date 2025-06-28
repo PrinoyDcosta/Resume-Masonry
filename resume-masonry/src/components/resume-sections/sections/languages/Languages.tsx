@@ -10,15 +10,17 @@ interface LanguagesProps {
     title: string
     data: Array<ILanguage>
     updateData: (newData?: Array<ILanguage>, title?: string) => void
+    readonly?: boolean
 }
 
 const Languages: FC<LanguagesProps> = ({
     data,
     title,
-    updateData
+    updateData,
+    readonly
 }) => {
     const [isEditMode, setIsEditMode] = useState(false)
-    const LanguagesWithToolbar = withToolbar(LanguagesViewer, title, () => setIsEditMode(true))
+    const LanguagesWithToolbar = withToolbar(LanguagesViewer, title, () => setIsEditMode(true), readonly)
 
     const updateSkills = (newData: Array<ILanguage>, title?: string) => {
         updateData(newData, title)
