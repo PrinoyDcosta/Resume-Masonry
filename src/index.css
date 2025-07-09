@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 @plugin "tailwindcss-animate";
-@import "./components/resume-sections/sections/skills/skills.css";
 @custom-variant dark (&:is(.dark *));
 
 :root {
